@@ -1,4 +1,4 @@
-package de.hsmannheim.lecture.domain;
+package de.hsmannheim.room.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

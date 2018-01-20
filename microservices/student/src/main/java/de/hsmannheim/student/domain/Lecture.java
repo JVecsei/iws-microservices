@@ -15,7 +15,6 @@ public class Lecture {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@JsonProperty(access = Access.READ_ONLY)
 	private Long id;
 
 	@Column(unique = true, nullable = false)

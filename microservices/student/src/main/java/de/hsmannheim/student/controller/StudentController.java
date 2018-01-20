@@ -5,6 +5,7 @@ import java.net.URISyntaxException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +19,7 @@ import de.hsmannheim.student.persistence.StudentRepository;
 
 @RestController
 @RequestMapping("/student")
+@CrossOrigin(origins="*")
 public class StudentController {
 
 	@Autowired
