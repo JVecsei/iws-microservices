@@ -6,6 +6,7 @@ import java.net.URISyntaxException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +19,7 @@ import de.hsmannheim.student.domain.Student;
 import de.hsmannheim.student.persistence.StudentRepository;
 
 @RestController
-@RequestMapping("/student")
+@RequestMapping("/students")
 @CrossOrigin(origins="*")
 public class StudentController {
 
@@ -28,7 +29,7 @@ public class StudentController {
 	@PostMapping
 	public ResponseEntity<String> create(@RequestBody Student student) throws URISyntaxException {
 		this.studentRepository.save(student);
-		URI location = new URI("/student/" + student.getId());
+		URI location = new URI("/students/" + student.getId());
 		return ResponseEntity.created(location).build();
 	}
 
@@ -42,6 +43,16 @@ public class StudentController {
 		if (this.studentRepository.exists(id)) {
 			student.setId(id);
 			this.studentRepository.save(student);
+			return ResponseEntity.ok().build();
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
+	
+	@DeleteMapping("/{id}")
+	public ResponseEntity<String> delete(@PathVariable Long id) {
+		if (this.studentRepository.exists(id)) {
+			this.studentRepository.delete(id);
 			return ResponseEntity.ok().build();
 		} else {
 			return ResponseEntity.notFound().build();

@@ -6,6 +6,7 @@ import java.net.URISyntaxException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +19,7 @@ import de.hsmannheim.room.domain.Room;
 import de.hsmannheim.room.persistence.RoomRepository;
 
 @RestController
-@RequestMapping("/room")
+@RequestMapping("/rooms")
 @CrossOrigin(origins="*")
 public class RoomController {
 
@@ -28,7 +29,7 @@ public class RoomController {
 	@PostMapping
 	public ResponseEntity<String> create(@RequestBody Room room) throws URISyntaxException {
 		this.roomRepository.save(room);
-		URI location = new URI("/room/" + room.getId());
+		URI location = new URI("/rooms/" + room.getId());
 		return ResponseEntity.created(location).build();
 	}
 
@@ -42,6 +43,16 @@ public class RoomController {
 		if (this.roomRepository.exists(id)) {
 			room.setId(id);
 			this.roomRepository.save(room);
+			return ResponseEntity.ok().build();
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
+	
+	@DeleteMapping("/{id}")
+	public ResponseEntity<String> delete(@PathVariable Long id) {
+		if (this.roomRepository.exists(id)) {
+			this.roomRepository.delete(id);
 			return ResponseEntity.ok().build();
 		} else {
 			return ResponseEntity.notFound().build();

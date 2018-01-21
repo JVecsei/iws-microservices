@@ -6,6 +6,7 @@ import java.net.URISyntaxException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +19,7 @@ import de.hsmannheim.lecture.domain.Lecture;
 import de.hsmannheim.lecture.persistence.LectureRepository;
 
 @RestController
-@RequestMapping("/lecture")
+@RequestMapping("/lectures")
 @CrossOrigin(origins="*")
 public class LectureController {
 
@@ -28,7 +29,7 @@ public class LectureController {
 	@PostMapping
 	public ResponseEntity<String> create(@RequestBody Lecture lecture) throws URISyntaxException {
 		this.lectureRepository.save(lecture);
-		URI location = new URI("/lecture/" + lecture.getId());
+		URI location = new URI("/lectures/" + lecture.getId());
 		return ResponseEntity.created(location).build();
 	}
 
@@ -42,6 +43,16 @@ public class LectureController {
 		if (this.lectureRepository.exists(id)) {
 			lecture.setId(id);
 			this.lectureRepository.save(lecture);
+			return ResponseEntity.ok().build();
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
+	
+	@DeleteMapping("/{id}")
+	public ResponseEntity<String> delete(@PathVariable Long id) {
+		if (this.lectureRepository.exists(id)) {
+			this.lectureRepository.delete(id);
 			return ResponseEntity.ok().build();
 		} else {
 			return ResponseEntity.notFound().build();
