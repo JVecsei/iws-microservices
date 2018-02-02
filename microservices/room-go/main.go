@@ -28,7 +28,7 @@ func (Room) TableName() string {
 
 func main() {
 	var err error
-	db, err = gorm.Open("mysql", "root:@/hochschule?charset=utf8&parseTime=True&loc=Local")
+	db, err = gorm.Open("mysql", "root:iws@/hochschule?charset=utf8&parseTime=True&loc=Local")
 	defer db.Close()
 	if err != nil {
 		log.Fatal(err)
